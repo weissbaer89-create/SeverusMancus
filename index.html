@@ -1,2 +1,940 @@
-# SeverusMancus
-Severus Mancus Character Sheet
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLASSIFIED // MANCUS, SEVERUS</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --bg2: #0d0d0d;
+  --panel: #0f0f0f;
+  --panel2: #131313;
+  --border: #1e1e1e;
+  --border-bright: #2e2e2e;
+  --blood: #8b1a1a;
+  --blood-bright: #c0392b;
+  --blood-dim: rgba(139,26,26,0.15);
+  --steel: #4a5568;
+  --steel-bright: #718096;
+  --ice: #a8b8c8;
+  --ice-dim: #6a7a8a;
+  --text: #b8b8b8;
+  --text-dim: #555;
+  --text-faint: #2e2e2e;
+  --green-bright: #40916c;
+  --warn-bright: #d4a017;
+  --glow-blood: 0 0 8px rgba(192,57,43,0.4);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { overflow-y: scroll; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Courier Prime', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(139,26,26,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(74,85,104,0.04) 0%, transparent 50%),
+    repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,0.007) 60px, rgba(255,255,255,0.007) 61px),
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.005) 60px, rgba(255,255,255,0.005) 61px);
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
+  pointer-events: none; z-index: 999; opacity: 0.5;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none; z-index: 998;
+}
+
+.wrapper {
+  position: relative; z-index: 10;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+
+/* ===================== CLASSIFICATION BAR ===================== */
+.classbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 20px;
+  background: var(--blood);
+  margin-bottom: 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.classbar-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px; letter-spacing: 6px; color: #fff;
+}
+.classbar-id {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 2px;
+}
+
+/* ===================== HEADER ===================== */
+.header {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--blood);
+  padding: 20px 24px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  position: relative; overflow: hidden;
+  animation: fadeIn 0.5s ease;
+}
+.header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, var(--blood), transparent 60%);
+}
+.header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.file-label { font-size: 9px; letter-spacing: 5px; color: var(--text-dim); margin-bottom: 4px; font-style: italic; }
+.char-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(30px, 5vw, 54px);
+  letter-spacing: 6px; line-height: 1;
+  color: var(--ice);
+}
+.char-epithet {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(11px, 1.8vw, 15px); font-weight: 300; font-style: italic;
+  color: var(--blood-bright); letter-spacing: 3px; margin-top: 5px;
+  text-shadow: var(--glow-blood);
+}
+.char-role { font-size: 10px; color: var(--text-dim); letter-spacing: 2px; margin-top: 10px; }
+
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+.threat-box {
+  border: 1px solid var(--blood); padding: 8px 14px; text-align: center;
+  background: var(--blood-dim);
+}
+.threat-label { font-size: 8px; letter-spacing: 3px; color: var(--blood-bright); display: block; margin-bottom: 2px; font-style: italic; }
+.threat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 2px; color: var(--blood-bright);
+  text-shadow: var(--glow-blood);
+}
+.status-row { display: flex; align-items: center; gap: 6px; }
+.status-dot { width: 6px; height: 6px; background: var(--green-bright); border-radius: 50%; box-shadow: 0 0 6px var(--green-bright); animation: blink 2.5s ease-in-out infinite; }
+.status-text { font-size: 9px; letter-spacing: 2px; color: var(--steel-bright); font-style: italic; }
+.barcode-line { font-size: 7px; color: var(--text-faint); letter-spacing: 1px; margin-top: 4px; }
+
+/* ===================== LAYOUT ===================== */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  animation: fadeIn 0.6s ease 0.1s both;
+}
+.col-left { display: flex; flex-direction: column; gap: 16px; }
+.col-right { display: flex; flex-direction: column; gap: 16px; }
+
+/* ===================== PANEL ===================== */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 2px; height: 100%;
+  background: var(--blood); opacity: 0.6;
+}
+.panel.steel-accent::before { background: var(--steel); }
+.panel.green-accent::before { background: var(--green-bright); }
+.panel.warn-accent::before { background: var(--warn-bright); }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px 8px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.015);
+  cursor: pointer; user-select: none;
+}
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px; letter-spacing: 4px; color: var(--ice-dim);
+}
+.panel-badge { font-size: 8px; color: var(--text-dim); letter-spacing: 2px; font-style: italic; }
+.panel-body { padding: 14px 14px 14px 18px; }
+
+.panel-chevron { font-style: normal; display: inline-block; transition: transform 0.3s; color: var(--text-dim); font-size: 10px; }
+.panel.collapsed .panel-chevron { transform: rotate(-90deg); }
+.panel-body { transition: max-height 0.35s ease, opacity 0.25s ease; overflow: hidden; }
+.panel:not(.collapsed) .panel-body { max-height: 3000px; opacity: 1; }
+.panel.collapsed .panel-body { max-height: 0 !important; opacity: 0; padding-top: 0; padding-bottom: 0; }
+
+/* ===================== PORTRAIT ===================== */
+.portrait-wrap {
+  width: 100%; aspect-ratio: 3/4;
+  background: #050505;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.portrait-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  filter: contrast(1.15) saturate(0.15) brightness(0.8);
+  transition: filter 0.4s;
+}
+.portrait-wrap:hover img { filter: contrast(1.2) saturate(0.3) brightness(0.85); }
+.portrait-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(5,5,5,0.15) 0%, transparent 40%, rgba(5,5,5,0.88) 100%);
+  pointer-events: none;
+}
+.portrait-crack {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(133deg, transparent 47%, rgba(139,26,26,0.12) 48%, rgba(139,26,26,0.12) 49%, transparent 50%),
+    linear-gradient(68deg, transparent 33%, rgba(80,80,80,0.06) 33.5%, rgba(80,80,80,0.06) 34%, transparent 34.5%);
+}
+.portrait-corner { position: absolute; width: 16px; height: 16px; border-color: var(--blood-bright); border-style: solid; opacity: 0.4; }
+.portrait-corner.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+.portrait-corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+.portrait-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+.portrait-corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+.portrait-label { position: absolute; bottom: 10px; left: 12px; font-size: 8px; letter-spacing: 3px; color: var(--ice-dim); font-style: italic; }
+.scan-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(139,26,26,0.4), transparent);
+  animation: scan-v 8s linear infinite; pointer-events: none;
+}
+@keyframes scan-v { 0%{top:0;opacity:0.6} 95%{top:100%;opacity:0.1} 100%{top:100%;opacity:0} }
+
+/* ===================== ID FIELDS ===================== */
+.id-field { margin-bottom: 10px; }
+.id-field:last-child { margin-bottom: 0; }
+.id-label { font-size: 8px; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 2px; font-style: italic; }
+.id-value {
+  font-size: 13px; color: var(--text);
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--border);
+  width: 100%; padding: 2px 0; outline: none;
+  font-family: 'Courier Prime', monospace;
+  transition: border-color 0.2s, color 0.2s;
+}
+.id-value:focus { border-bottom-color: var(--blood-bright); color: #fff; }
+.id-value.highlight { color: var(--ice); }
+.id-value.danger { color: var(--blood-bright); }
+.id-value.muted { color: var(--text-dim); font-style: italic; font-size: 11px; }
+
+/* XP */
+.xp-inputs { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.xp-num {
+  background: transparent; border: none;
+  border-bottom: 1px solid transparent;
+  font-family: 'Courier Prime', monospace; font-size: 13px; outline: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.xp-num.cur { width: 52px; color: var(--ice); font-weight: 700; }
+.xp-num.max { width: 56px; color: var(--text-dim); }
+.xp-num:focus { border-bottom-color: var(--blood-bright); color: #fff; }
+.xp-sep { color: var(--text-faint); font-size: 12px; }
+.xp-unit { font-size: 11px; color: var(--text-dim); font-style: italic; }
+.xp-bar-meta { display: flex; justify-content: space-between; margin: 6px 0 3px; }
+.xp-bar-label { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); font-style: italic; }
+.xp-pct { font-size: 9px; color: var(--ice-dim); }
+.xp-track { height: 4px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); overflow: hidden; }
+.xp-fill {
+  height: 100%; background: linear-gradient(90deg, var(--blood), var(--blood-bright));
+  box-shadow: var(--glow-blood); transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.xp-fill::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: #fff; opacity: 0.25; }
+
+/* ===================== STAT BARS ===================== */
+.stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+.stat-row:last-child { margin-bottom: 0; }
+.stat-label { font-size: 9px; letter-spacing: 1px; color: var(--text-dim); width: 100px; flex-shrink: 0; font-style: italic; }
+.stat-track { flex: 1; height: 4px; background: rgba(255,255,255,0.04); overflow: hidden; }
+.stat-fill { height: 100%; transition: width 0.5s ease; }
+.stat-fill.blood { background: linear-gradient(90deg, var(--blood), var(--blood-bright)); box-shadow: var(--glow-blood); }
+.stat-fill.steel { background: linear-gradient(90deg, #2a3548, var(--steel-bright)); box-shadow: 0 0 5px rgba(113,128,150,0.4); }
+.stat-val {
+  width: 32px; background: transparent; border: none;
+  border-bottom: 1px solid transparent; outline: none;
+  font-family: 'Courier Prime', monospace; font-size: 11px;
+  text-align: right; color: var(--ice); transition: border-color 0.2s;
+}
+.stat-val:focus { border-bottom-color: var(--blood-bright); color: #fff; }
+
+/* ===================== VITALS ===================== */
+.vital { margin-bottom: 14px; }
+.vital:last-child { margin-bottom: 0; }
+.vital-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.vital-name { font-size: 8px; letter-spacing: 3px; color: var(--text-dim); font-style: italic; }
+.vital-nums { display: flex; align-items: baseline; gap: 3px; font-family: 'Courier Prime', monospace; font-size: 12px; }
+.v-cur, .v-max {
+  background: transparent; border: none; outline: none; font-family: inherit; font-size: inherit;
+  cursor: text; border-bottom: 1px solid transparent; transition: all 0.2s; text-align: right;
+}
+.v-cur { width: 42px; }
+.v-max { width: 42px; color: var(--text-dim); }
+.v-cur:focus, .v-max:focus { border-bottom-color: var(--blood-bright); color: #fff; }
+.vital-bar { height: 3px; background: rgba(255,255,255,0.04); position: relative; }
+.vital-fill { height: 100%; transition: width 0.4s ease; }
+.vital-fill::after { content: ''; position: absolute; right: -2px; top: 50%; transform: translateY(-50%); width: 5px; height: 5px; border-radius: 50%; }
+.vital-hp .vital-nums { color: var(--blood-bright); }
+.vital-hp .vital-fill { background: linear-gradient(90deg, #3d0a0a, var(--blood-bright)); box-shadow: 0 0 5px var(--blood); }
+.vital-hp .vital-fill::after { background: var(--blood-bright); box-shadow: 0 0 5px var(--blood-bright); }
+.vital-st .vital-nums { color: var(--steel-bright); }
+.vital-st .vital-fill { background: linear-gradient(90deg, #1a2030, var(--steel-bright)); }
+.vital-st .vital-fill::after { background: var(--steel-bright); }
+.vital-sn .vital-nums { color: #9b7fa6; }
+.vital-sn .vital-fill { background: linear-gradient(90deg, #1e0e28, #9b7fa6); }
+.vital-sn .vital-fill::after { background: #9b7fa6; }
+.vital-en .vital-nums { color: var(--warn-bright); }
+.vital-en .vital-fill { background: linear-gradient(90deg, #2a1a00, var(--warn-bright)); }
+.vital-en .vital-fill::after { background: var(--warn-bright); }
+
+/* ===================== IMPLANTS ===================== */
+.implant {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-left: 2px solid var(--blood);
+  padding: 10px 12px; margin-bottom: 8px; transition: border-color 0.2s;
+}
+.implant:last-child { margin-bottom: 0; }
+.implant:hover { border-color: var(--border-bright); border-left-color: var(--blood-bright); }
+.implant.steel { border-left-color: var(--steel); }
+.implant.steel:hover { border-left-color: var(--steel-bright); }
+.implant-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.implant-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 1px; }
+.implant-status { font-size: 8px; letter-spacing: 2px; padding: 2px 7px; border: 1px solid; font-style: italic; }
+.implant-status.ok { color: var(--green-bright); border-color: rgba(64,145,108,0.35); }
+.implant-status.warn { color: var(--warn-bright); border-color: rgba(212,160,23,0.35); }
+.implant-status.erased { color: var(--blood-bright); border-color: rgba(192,57,43,0.35); }
+.implant-desc { font-size: 10px; color: var(--text-dim); line-height: 1.6; }
+.implant-bar { height: 2px; background: rgba(255,255,255,0.04); margin-top: 8px; }
+.implant-bar-fill { height: 100%; }
+
+/* ===================== ABILITIES ===================== */
+.ability {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--panel2); border: 1px solid var(--border);
+  border-left: 2px solid var(--blood);
+  padding: 11px 13px; margin-bottom: 8px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.ability:last-child { margin-bottom: 0; }
+.ability:hover { background: rgba(139,26,26,0.035); border-color: var(--border-bright); border-left-color: var(--blood-bright); }
+.ability.steel { border-left-color: var(--steel); }
+.ability.steel:hover { border-left-color: var(--steel-bright); background: rgba(113,128,150,0.03); }
+.ability.psi { border-left-color: #6b4a8a; }
+.ability.psi:hover { border-left-color: #9b7fa6; background: rgba(107,74,138,0.04); }
+.ability-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; line-height: 1; }
+.ability-right { flex: 1; }
+.ability-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: 1px; margin-bottom: 3px; }
+.ability-desc { font-size: 10px; color: var(--text-dim); line-height: 1.6; }
+.ability-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.atag { font-size: 8px; letter-spacing: 1px; padding: 2px 7px; border: 1px solid var(--border); color: var(--text-dim); font-style: italic; }
+.atag.danger { border-color: rgba(192,57,43,0.35); color: var(--blood-bright); }
+.atag.neutral { border-color: rgba(113,128,150,0.3); color: var(--steel-bright); }
+.atag.psi { border-color: rgba(107,74,138,0.35); color: #9b7fa6; }
+
+/* ===================== WEAKNESSES ===================== */
+.weakness {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 11px; margin-bottom: 8px;
+  background: rgba(139,26,26,0.04);
+  border: 1px solid rgba(139,26,26,0.12);
+}
+.weakness:last-child { margin-bottom: 0; }
+.weakness-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.weakness-body { flex: 1; }
+.weakness-name { font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 600; color: var(--blood-bright); letter-spacing: 1px; margin-bottom: 2px; }
+.weakness-desc { font-size: 10px; color: var(--text-dim); line-height: 1.5; }
+
+/* ===================== NOTES ===================== */
+.notes-area {
+  width: 100%; background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  color: var(--text); font-family: 'Courier Prime', monospace;
+  font-size: 11px; padding: 10px 12px;
+  resize: vertical; outline: none; min-height: 80px; line-height: 1.7;
+  transition: border-color 0.2s;
+}
+.notes-area:focus { border-color: var(--blood); }
+
+/* ===================== DIVIDER ===================== */
+.divider { display: flex; align-items: center; gap: 8px; margin: 12px 0 10px; }
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-label { font-size: 8px; letter-spacing: 3px; color: var(--text-dim); font-style: italic; }
+
+/* ===================== BOTTOM BAR ===================== */
+.bottom-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-top: 1px solid var(--blood);
+  margin-top: 16px;
+  font-size: 9px; color: var(--text-dim); letter-spacing: 2px; font-style: italic;
+}
+.blink { color: var(--blood-bright); animation: blink 2s step-end infinite; }
+
+/* ===================== BURGER MENU ===================== */
+.burger-btn {
+  position: fixed; top: 20px; right: 24px; z-index: 2000;
+  background: var(--panel); border: 1px solid var(--border-bright);
+  cursor: pointer; width: 38px; height: 38px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.burger-btn:hover { border-color: var(--blood-bright); box-shadow: var(--glow-blood); }
+.burger-btn.open { border-color: var(--blood-bright); box-shadow: var(--glow-blood); }
+.burger-btn::before, .burger-btn::after {
+  content: ''; position: absolute; width: 6px; height: 6px;
+  border-color: var(--blood); border-style: solid; opacity: 0.5; transition: opacity 0.2s;
+}
+.burger-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.burger-btn::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+.burger-btn:hover::before, .burger-btn:hover::after,
+.burger-btn.open::before, .burger-btn.open::after { opacity: 1; }
+.burger-line {
+  width: 18px; height: 1px;
+  background: var(--blood-bright); box-shadow: 0 0 4px rgba(192,57,43,0.5);
+  transition: all 0.3s ease; transform-origin: center;
+}
+.burger-btn.open .burger-line:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger-btn.open .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burger-btn.open .burger-line:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.burger-overlay {
+  position: fixed; inset: 0; background: rgba(4,4,4,0.82); z-index: 1500;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(1px);
+}
+.burger-overlay.open { opacity: 1; pointer-events: all; }
+
+.burger-nav {
+  position: fixed; top: 0; right: -295px;
+  width: 275px; height: 100vh;
+  background: var(--panel);
+  border-left: 1px solid var(--blood);
+  z-index: 1800;
+  display: flex; flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+}
+.burger-nav::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--blood); box-shadow: 0 0 10px rgba(192,57,43,0.5); flex-shrink: 0;
+}
+.burger-nav.open { right: 0; }
+.burger-nav-header {
+  padding: 20px 18px 14px; border-bottom: 1px solid var(--border);
+  background: rgba(139,26,26,0.05); flex-shrink: 0; position: relative; z-index: 1;
+}
+.burger-nav-sys { font-size: 8px; letter-spacing: 4px; color: var(--blood-bright); margin-bottom: 6px; font-style: italic; opacity: 0.7; }
+.burger-nav-title { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 5px; color: var(--ice-dim); }
+.burger-links { flex: 1; list-style: none; padding: 10px 0; }
+.burger-links a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 18px; font-family: 'Courier Prime', monospace; font-style: italic;
+  font-size: 11px; letter-spacing: 1px; color: var(--text-dim); text-decoration: none;
+  border-left: 2px solid transparent; transition: all 0.2s;
+}
+.burger-links a:hover { color: var(--ice); background: rgba(139,26,26,0.07); border-left-color: var(--blood-bright); }
+.burger-links .nav-icon { font-size: 10px; width: 14px; text-align: center; color: var(--blood); opacity: 0.7; }
+.burger-links a:hover .nav-icon { opacity: 1; }
+.burger-links .nav-sep { height: 1px; background: var(--border); margin: 8px 18px; }
+.burger-links .nav-section-label {
+  font-size: 8px; letter-spacing: 3px; color: var(--text-dim); opacity: 0.4;
+  padding: 10px 18px 4px; font-style: italic;
+}
+.burger-nav-footer {
+  padding: 12px 18px; border-top: 1px solid var(--border);
+  font-size: 8px; color: var(--text-faint); letter-spacing: 2px; font-style: italic; flex-shrink: 0;
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:800px) {
+  .layout { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- BURGER -->
+<button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Navigation">
+  <div class="burger-line"></div>
+  <div class="burger-line"></div>
+  <div class="burger-line"></div>
+</button>
+<div class="burger-overlay" id="burger-overlay" onclick="closeBurger()"></div>
+<nav class="burger-nav" id="burger-nav">
+  <div class="burger-nav-header">
+    <div class="burger-nav-sys">// CLASSIFIED // NAVIGATION</div>
+    <div class="burger-nav-title">SYSTEM-MENÜ</div>
+  </div>
+  <ul class="burger-links">
+    <li><div class="nav-section-label">AKTEN</div></li>
+    <li><a href="#" onclick="closeBurger()"><span class="nav-icon">▸</span> SEVERUS MANCUS — AKTE</a></li>
+	<li><a href="https://weissbaer89-create.github.io/NovaFlux/"><span class="nav-icon">▸</span> DR. NOVA FLUX — AKTE</a></li>
+    <li><a href="https://weissbaer89-create.github.io/EliasVant/"><span class="nav-icon">▸</span> ELIAS VANT — AKTE</a></li>
+    <li><div class="nav-sep"></div></li>
+    <!-- <li><div class="nav-section-label">REFERENZ</div></li>
+    <li><a href="#"><span class="nav-icon">▸</span> REGELWERK</a></li>
+    <li><a href="#"><span class="nav-icon">▸</span> WELTENBAU</a></li>
+    <li><div class="nav-sep"></div></li>
+    <li><div class="nav-section-label">SYSTEM</div></li>
+    <li><a href="#"><span class="nav-icon">⚙</span> EINSTELLUNGEN</a></li> -->
+  </ul>
+  <div class="burger-nav-footer">// ZUGRIFF AUTORISIERT // SEKTION 9-DELTA</div>
+</nav>
+
+<!-- CLASSIFICATION BAR -->
+<div class="classbar">
+  <span class="classbar-text">⬛ STRENG GEHEIM // ZUGRIFF NUR MIT FREIGABE DELTA-4</span>
+  <span class="classbar-id">AKTE #3319-M · REV.2.1</span>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="file-label">// PERSONENAKTE // NACHRICHTENDIENSTLICHES SUBJEKT</div>
+        <div class="char-name">SEVERUS MANCUS</div>
+        <div class="char-epithet">„Der Arzt, der Geständnisse heilt"</div>
+        <div class="char-role">HACKER &nbsp;·&nbsp; INFORMATIONSHÄNDLER &nbsp;·&nbsp; VERHÖRSPEZIALIST &nbsp;·&nbsp; STATUS: UNTERGETAUCHT</div>
+      </div>
+      <div class="header-right">
+        <div class="threat-box">
+          <span class="threat-label">BEDROHUNGSSTUFE</span>
+          <div class="threat-val">8 / 10</div>
+        </div>
+        <div class="status-row">
+          <div class="status-dot"></div>
+          <span class="status-text">LETZTER KONTAKT: UNBEKANNT</span>
+        </div>
+        <div class="barcode-line">||| |||| || ||||| ||||||| |||| || SHADOW-#3319-M</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-left">
+
+      <!-- PHOTO -->
+      <div class="panel" style="padding:0;">
+        <div class="panel-header" style="cursor:default;">
+          <span class="panel-title">BIOMETRIE</span>
+          <span class="panel-badge">FOTO-ID</span>
+        </div>
+        <div class="portrait-wrap">
+          <img src="Portrait.png" alt="Severus Mancus" id="char-photo">
+          <div class="portrait-overlay"></div>
+          <div class="portrait-crack"></div>
+          <div class="scan-line"></div>
+          <div class="portrait-corner tl"></div><div class="portrait-corner tr"></div>
+          <div class="portrait-corner bl"></div><div class="portrait-corner br"></div>
+          <div class="portrait-label">GESICHTSMATCH // 62%</div>
+        </div>
+        <div class="panel-body" style="padding-top:10px;">
+          <div style="font-size:8px;color:var(--text-dim);margin-bottom:4px;font-style:italic;">FOTO-URL EINGEBEN:</div>
+          <input type="text" placeholder="https://..." style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-family:'Courier Prime',monospace;font-size:10px;padding:5px 8px;outline:none;" oninput="document.getElementById('char-photo').src=this.value">
+        </div>
+      </div>
+
+      <!-- IDENTITY -->
+      <div class="panel">
+        <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+          <span class="panel-title">IDENTITÄTSDATEN</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">ID-CORE</span><i class="panel-chevron">▼</i></span>
+        </div>
+        <div class="panel-body">
+          <div class="id-field">
+            <div class="id-label">NAME / ALIAS</div>
+            <input class="id-value highlight" value="Severus „Vivisector" Mancus">
+          </div>
+          <div class="id-field">
+            <div class="id-label">SPEZIES // KLASSE</div>
+            <input class="id-value" value="Mensch (teilcybernetisch, Narben-Implantate)">
+          </div>
+          <div class="id-field">
+            <div class="id-label">OPERATIVE ROLLE</div>
+            <input class="id-value" value="Hacker · Informationshändler · Verhörspezialist">
+          </div>
+          <div class="id-field">
+            <div class="id-label">FRÜHERE AFFILIATION</div>
+            <input class="id-value danger" value="Konzern [GESCHWÄRZT] — ENTKOMMEN">
+          </div>
+          <div class="id-field">
+            <div class="id-label">LEVEL</div>
+            <input class="id-value" value="LVL 1" style="width:60px;display:inline-block;">
+          </div>
+          <div class="id-field">
+            <div class="id-label">ERFAHRUNG</div>
+            <div class="xp-inputs">
+              <input type="number" id="xp-cur" class="xp-num cur" value="0" min="0" oninput="updateXp()">
+              <span class="xp-sep">|</span>
+              <input type="number" id="xp-max" class="xp-num max" value="1000" min="1" oninput="updateXp()">
+              <span class="xp-unit">XP</span>
+            </div>
+            <div class="xp-bar-meta">
+              <span class="xp-bar-label">FORTSCHRITT // NÄCHSTES LEVEL</span>
+              <span class="xp-pct" id="xp-pct">0%</span>
+            </div>
+            <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+          </div>
+          <div class="id-field">
+            <div class="id-label">MOTTO</div>
+            <input class="id-value muted" value="„Jeder bricht. Die Frage ist nur: wofür."">
+          </div>
+
+          <div class="divider"><div class="divider-line"></div><div class="divider-label">MARKIERUNGEN</div><div class="divider-line"></div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="atag danger">KONZERN-FEIND</span>
+            <span class="atag danger">CHIP GELÖSCHT</span>
+            <span class="atag neutral">CYBERNETISCH</span>
+            <span class="atag neutral">UNTERGETAUCHT</span>
+            <span class="atag psi">PSIONISCH</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VITALS -->
+      <div class="panel">
+        <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+          <span class="panel-title">VITALWERTE</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">BIO-MON</span><i class="panel-chevron">▼</i></span>
+        </div>
+        <div class="panel-body">
+          <div class="vital vital-hp">
+            <div class="vital-top">
+              <span class="vital-name">TREFFERPUNKTE</span>
+              <div class="vital-nums">
+                <input class="v-cur" value="80"><span style="color:var(--text-faint)">/</span><input class="v-max" value="100">
+              </div>
+            </div>
+            <div class="vital-bar"><div class="vital-fill" style="width:80%"></div></div>
+          </div>
+          <div class="vital vital-st">
+            <div class="vital-top">
+              <span class="vital-name">AUSDAUER</span>
+              <div class="vital-nums">
+                <input class="v-cur" value="60"><span style="color:var(--text-faint)">/</span><input class="v-max" value="80">
+              </div>
+            </div>
+            <div class="vital-bar"><div class="vital-fill" style="width:75%"></div></div>
+          </div>
+          <div class="vital vital-sn">
+            <div class="vital-top">
+              <span class="vital-name">PSYCHISCHE STABILITÄT</span>
+              <div class="vital-nums">
+                <input class="v-cur" value="55"><span style="color:var(--text-faint)">/</span><input class="v-max" value="100">
+              </div>
+            </div>
+            <div class="vital-bar"><div class="vital-fill" style="width:55%"></div></div>
+          </div>
+          <div class="vital vital-en">
+            <div class="vital-top">
+              <span class="vital-name">IMPLANTAT-ENERGIE</span>
+              <div class="vital-nums">
+                <input class="v-cur" value="70"><span style="color:var(--text-faint)">/</span><input class="v-max" value="100">
+              </div>
+            </div>
+            <div class="vital-bar"><div class="vital-fill" style="width:70%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-right">
+
+      <!-- STATS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="panel">
+          <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+            <span class="panel-title">PRIMÄRWERTE</span>
+            <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">ATTR-A</span><i class="panel-chevron">▼</i></span>
+          </div>
+          <div class="panel-body" id="primary-stats"></div>
+        </div>
+        <div class="panel steel-accent">
+          <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+            <span class="panel-title" style="color:var(--steel-bright);">SEKUNDÄRWERTE</span>
+            <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">ATTR-B</span><i class="panel-chevron">▼</i></span>
+          </div>
+          <div class="panel-body" id="secondary-stats"></div>
+        </div>
+      </div>
+
+      <!-- IMPLANTS -->
+      <div class="panel">
+        <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+          <span class="panel-title">IMPLANTATE & NARBEN</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">BIO-SYS</span><i class="panel-chevron">▼</i></span>
+        </div>
+        <div class="panel-body">
+
+          <div class="implant">
+            <div class="implant-top">
+              <span class="implant-name">Neuronaler Überwachungs-Chip</span>
+              <span class="implant-status erased">GELÖSCHT</span>
+            </div>
+            <div class="implant-desc">Ursprünglich zur Loyalitätskontrolle implantiert. Von Mancus selbst deaktiviert und ausgebrannt. Hinterlässt residuale neurointerferierende Störfelder — gelegentliche Blackouts unter extremem Stress.</div>
+            <div class="implant-bar"><div class="implant-bar-fill" style="width:0%;background:var(--blood);"></div></div>
+          </div>
+
+          <div class="implant steel">
+            <div class="implant-top">
+              <span class="implant-name">Subkutane Daten-Bridge</span>
+              <span class="implant-status ok">AKTIV</span>
+            </div>
+            <div class="implant-desc">Hochfrequenz-Datenkoppler im linken Unterarm. Ermöglicht direkten Hardlink zu Terminals, Netzwerkknoten und verschlüsselten Systemen — ohne externe Hardware.</div>
+            <div class="implant-bar"><div class="implant-bar-fill" style="width:88%;background:linear-gradient(90deg,var(--steel),var(--steel-bright));box-shadow:0 0 4px rgba(113,128,150,0.4);"></div></div>
+          </div>
+
+          <div class="implant steel">
+            <div class="implant-top">
+              <span class="implant-name">Kortikaler Analyse-Prozessor</span>
+              <span class="implant-status ok">AKTIV</span>
+            </div>
+            <div class="implant-desc">Verstärkt Mustererkennung und Verhaltensanalyse in Echtzeit. Verarbeitet Mikroexpressionen, Stimmlagen und Körpersprache. Ermöglicht psionische Interferenz-Fähigkeiten.</div>
+            <div class="implant-bar"><div class="implant-bar-fill" style="width:92%;background:linear-gradient(90deg,var(--steel),var(--steel-bright));box-shadow:0 0 4px rgba(113,128,150,0.4);"></div></div>
+          </div>
+
+          <div class="implant">
+            <div class="implant-top">
+              <span class="implant-name">Narben-Geflecht (Körper)</span>
+              <span class="implant-status warn">INSTABIL</span>
+            </div>
+            <div class="implant-desc">Ausgedehnte Narben aus Folterperioden, subdermal mit Wundheilungs-Naniten verstärkt — jetzt überwachsen und fehlausgerichtet. Gelegentliche Nervenschmerz-Schübe. Funktional, aber unschön.</div>
+            <div class="implant-bar"><div class="implant-bar-fill" style="width:40%;background:linear-gradient(90deg,#3d0a0a,var(--blood-bright));box-shadow:0 0 3px var(--blood);"></div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ABILITIES -->
+      <div class="panel">
+        <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+          <span class="panel-title">FÄHIGKEITEN & FERTIGKEITEN</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">CAP-SYS</span><i class="panel-chevron">▼</i></span>
+        </div>
+        <div class="panel-body">
+
+          <div class="ability steel">
+            <div class="ability-icon">⌨</div>
+            <div class="ability-right">
+              <div class="ability-name">COMPUTERHACKING</div>
+              <div class="ability-desc">Subkutane Daten-Bridge kombiniert mit jahrelanger Konzernerfahrung. Spezialisiert auf neuronale Schnittstellen und adaptive Sicherheitsarchitektur. Kann Systeme kompromittieren, die er einst selbst entworfen hat.</div>
+              <div class="ability-tags">
+                <span class="atag neutral">DIREKTLINK</span>
+                <span class="atag neutral">SPEZIALIST</span>
+                <span class="atag danger">KONZERN-SYSTEME</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ability">
+            <div class="ability-icon">🧠</div>
+            <div class="ability-right">
+              <div class="ability-name">PSYCHOLOGISCHE MANIPULATION</div>
+              <div class="ability-desc">Versteht Menschen besser als sie sich selbst. Liest Schwächen, Wünsche, Ängste — und bedient sie ohne Skrupel. Keine Grausamkeit um ihrer selbst willen; alles ist zweckmäßig und kalkuliert.</div>
+              <div class="ability-tags">
+                <span class="atag danger">OHNE MORAL</span>
+                <span class="atag neutral">KALKULIERT</span>
+                <span class="atag neutral">CHARISMATISCH</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ability">
+            <div class="ability-icon">🗣</div>
+            <div class="ability-right">
+              <div class="ability-name">ÜBERZEUGUNG / VERHÖR</div>
+              <div class="ability-desc">Erfahren auf beiden Seiten des Verhörtisches. Wechselt mühelos zwischen Charme, Kälte und Druck. Jedes Mittel ist recht. Eigenart: er genießt die Konversation, nicht den Schmerz.</div>
+              <div class="ability-tags">
+                <span class="atag danger">JEDES MITTEL</span>
+                <span class="atag neutral">BEIDSEITS ERFAHREN</span>
+                <span class="atag neutral">SARKASTISCH</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ability psi">
+            <div class="ability-icon">〰</div>
+            <div class="ability-right">
+              <div class="ability-name">LEICHTE PSIONISCHE FÄHIGKEITEN</div>
+              <div class="ability-desc">Verstärkt durch den kortikalen Prozessor. Kann schwache Emotionen lesen, gelegentlich Gedankenfetzen auffangen und mentalen Druck erzeugen. Keine Telekinese — subtil, störend, entnervend.</div>
+              <div class="ability-tags">
+                <span class="atag psi">PSIONISCH</span>
+                <span class="atag psi">IMPLANTAT-GESTÜTZT</span>
+                <span class="atag neutral">SUBTIL</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+        <div class="panel">
+          <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+            <span class="panel-title" style="color:var(--blood-bright);">SCHWACHSTELLEN</span>
+            <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">VULN-LOG</span><i class="panel-chevron">▼</i></span>
+          </div>
+          <div class="panel-body">
+            <div class="weakness">
+              <div class="weakness-icon">🔌</div>
+              <div class="weakness-body">
+                <div class="weakness-name">CHIP-RESIDUEN</div>
+                <div class="weakness-desc">Gelöschter Chip hinterlässt Störfelder. Unter extremem Stress: Blackouts, Datenverlust, Implantat-Fehlfunktionen.</div>
+              </div>
+            </div>
+            <div class="weakness">
+              <div class="weakness-icon">🧊</div>
+              <div class="weakness-body">
+                <div class="weakness-name">EMOTIONALE KÄLTE</div>
+                <div class="weakness-desc">Unfähig zu echter Bindung. Verbündete sind Werkzeuge. Kann isolieren und in Fallen führen, die Loyalität voraussetzen.</div>
+              </div>
+            </div>
+            <div class="weakness">
+              <div class="weakness-icon">⚡</div>
+              <div class="weakness-body">
+                <div class="weakness-name">NERVENSCHMERZ-SCHÜBE</div>
+                <div class="weakness-desc">Fehlausgerichtete Narben-Naniten. Anfälle kommen unangekündigt. Kampfleistung: −40% für Dauer des Schubs.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+            <span class="panel-title">FELDNOTIZEN // SL</span>
+            <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">NOTE-SYS</span><i class="panel-chevron">▼</i></span>
+          </div>
+          <div class="panel-body">
+            <textarea class="notes-area" rows="4">Spricht leise, nie laut. Lächelt häufiger als angenehm ist.
+Bezeichnet Verhöre als "Gespräche mit Ergebnis".
+Wechselt alle 72h den Standort. Kein fester Wohnort.</textarea>
+            <div class="divider"><div class="divider-line"></div><div class="divider-label">KONZERN-STATUS</div><div class="divider-line"></div></div>
+            <textarea class="notes-area" rows="3">Offiziell: tot / vermisst.
+Intern: aktives Rückholprogramm. Belohnung: [GESCHWÄRZT].
+Grund: er weiß zu viel.</textarea>
+            <div class="divider"><div class="divider-line"></div><div class="divider-label">MARKENZEICHEN</div><div class="divider-line"></div></div>
+            <textarea class="notes-area" rows="2">Hinterlässt keine Spuren. Nur manchmal: ein sauber gelöschter Datenpfad, präzise wie ein Skalpell.</textarea>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /layout -->
+
+  <div class="bottom-bar">
+    <div>SHADOW-AKTE #3319-M // REV.2.1 // SEKTION 9-DELTA</div>
+    <div class="blink">● LIVE-EDIT AKTIV</div>
+    <div>LETZTE ÄNDERUNG: <span id="last-edit">—</span> UHR</div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+function togglePanel(panel) { panel.classList.toggle('collapsed'); }
+
+const primaryStats = [
+  { label: "STÄRKE",        val: 38, color: "blood" },
+  { label: "GESCHICK",      val: 72, color: "blood" },
+  { label: "INTELLIGENZ",   val: 96, color: "blood" },
+  { label: "WAHRNEHMUNG",   val: 89, color: "blood" },
+  { label: "CHARISMA",      val: 85, color: "blood" },
+  { label: "WILLENSKRAFT",  val: 78, color: "blood" },
+];
+const secondaryStats = [
+  { label: "HACKING",       val: 95, color: "steel" },
+  { label: "MANIPULATION",  val: 94, color: "steel" },
+  { label: "VERHÖR",        val: 91, color: "steel" },
+  { label: "PSIONIS",       val: 58, color: "steel" },
+  { label: "STEALTH",       val: 76, color: "steel" },
+  { label: "MEDIZIN",       val: 62, color: "steel" },
+];
+
+function renderStats(id, data) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  data.forEach((s, i) => {
+    const pct = Math.min(100, Math.max(0, s.val));
+    const row = document.createElement('div');
+    row.className = 'stat-row';
+    row.innerHTML = `
+      <span class="stat-label">${s.label}</span>
+      <div class="stat-track"><div class="stat-fill ${s.color}" style="width:${pct}%" data-i="${i}" data-cont="${id}"></div></div>
+      <input type="number" min="0" max="100" value="${s.val}" class="stat-val"
+        oninput="updateStat('${id}',${i},this.value)"
+        onfocus="this.style.color='#fff'"
+        onblur="this.style.color=''">
+    `;
+    el.appendChild(row);
+  });
+}
+function updateStat(id, i, val) {
+  const data = id === 'primary-stats' ? primaryStats : secondaryStats;
+  val = Math.min(100, Math.max(0, parseInt(val)||0));
+  data[i].val = val;
+  document.querySelector(`[data-i="${i}"][data-cont="${id}"]`).style.width = val + '%';
+  markEdit();
+}
+
+function updateXp() {
+  const cur = Math.max(0, parseInt(document.getElementById('xp-cur').value)||0);
+  const max = Math.max(1, parseInt(document.getElementById('xp-max').value)||1);
+  const pct = Math.min(100, Math.round(cur/max*100));
+  document.getElementById('xp-fill').style.width = pct + '%';
+  document.getElementById('xp-pct').textContent = pct + '%';
+  markEdit();
+}
+
+document.querySelectorAll('.v-cur, .v-max').forEach(el => {
+  el.addEventListener('input', () => {
+    const vital = el.closest('.vital');
+    const cur = parseFloat(vital.querySelector('.v-cur').value)||0;
+    const max = parseFloat(vital.querySelector('.v-max').value)||1;
+    vital.querySelector('.vital-fill').style.width = Math.min(100, cur/max*100) + '%';
+    markEdit();
+  });
+});
+
+function toggleBurger() {
+  const open = document.getElementById('burger-nav').classList.contains('open');
+  if (open) { closeBurger(); } else {
+    ['burger-btn','burger-nav','burger-overlay'].forEach(id => document.getElementById(id).classList.add('open'));
+  }
+}
+function closeBurger() {
+  ['burger-btn','burger-nav','burger-overlay'].forEach(id => document.getElementById(id).classList.remove('open'));
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBurger(); });
+
+function markEdit() {
+  document.getElementById('last-edit').textContent = new Date().toTimeString().slice(0,5);
+}
+document.addEventListener('input', markEdit);
+
+renderStats('primary-stats', primaryStats);
+renderStats('secondary-stats', secondaryStats);
+</script>
+</body>
+</html>
