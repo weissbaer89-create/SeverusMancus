@@ -21,7 +21,7 @@
   --ice: #a8b8c8;
   --ice-dim: #6a7a8a;
   --text: #b8b8b8;
-  --text-dim: #555;
+  --text-dim: #6d6c6c;/* #555; */
   --text-faint: #2e2e2e;
   --green-bright: #40916c;
   --warn-bright: #d4a017;
@@ -494,6 +494,10 @@ body::after {
   </ul>
   <div class="burger-nav-footer">// ZUGRIFF AUTORISIERT // SEKTION 9-DELTA</div>
 </nav>
+
+
+
+
 <div class="wrapper">
 <!-- CLASSIFICATION BAR -->
 <div class="classbar">
@@ -546,8 +550,8 @@ body::after {
         <!-- <div class="panel-body" style="padding-top:10px;">
           <div style="font-size:8px;color:var(--text-dim);margin-bottom:4px;font-style:italic;">FOTO-URL EINGEBEN:</div>
           <input type="text" placeholder="https://..." style="width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-family:'Courier Prime',monospace;font-size:10px;padding:5px 8px;outline:none;" oninput="document.getElementById('char-photo').src=this.value">
-        </div> -->
-      </div>
+        </div>-->
+      </div> 
 
       <!-- IDENTITY -->
       <div class="panel">
@@ -558,19 +562,20 @@ body::after {
         <div class="panel-body">
           <div class="id-field">
             <div class="id-label">NAME / ALIAS</div>
-            <input class="id-value highlight" value="Severus Mancus">
+            <!-- <input class="id-value highlight" value="Severus „Vivisector" Mancus">-->
+			<span class="id-value highlight" contenteditable="false">Severus Mancus</span>
           </div>
           <div class="id-field">
             <div class="id-label">SPEZIES // KLASSE</div>
-            <input class="id-value" value="Mensch">
+			<span class="id-value" contenteditable="false">Mensch (teilcybernetisch, Narben-Implantate)</span>
           </div>
           <div class="id-field">
             <div class="id-label">OPERATIVE ROLLE</div>
-            <input class="id-value" value="Hacker/Informationshändler/Verhörspezialist">
+			<span class="id-value" contenteditable="false">Hacker · Informationshändler · Verhörspezialist</span>
           </div>
           <div class="id-field">
             <div class="id-label">FRÜHERE AFFILIATION</div>
-            <input class="id-value danger" value="Konzern ███████████">
+			<span class="id-value danger" contenteditable="false">Konzern </span><span class="id-value danger" contenteditable="false" style="color: var(--text); background-color: var(--blood-bright);">[GESCHWÄRZT]</span>
           </div>
           <div class="id-field">
             <div class="id-label">LEVEL</div>
@@ -592,7 +597,7 @@ body::after {
           </div>
           <div class="id-field">
             <div class="id-label">MOTTO</div>
-            <input class="id-value muted" value="„Jeder bricht. Die Frage ist nur: wofür."">
+			<span class="id-value" contenteditable="false">&ldquo;Jeder bricht. Die Frage ist nur: wofür.&rdquo;</span>
           </div>
 
           <div class="divider"><div class="divider-line"></div><div class="divider-label">MARKIERUNGEN</div><div class="divider-line"></div></div>
@@ -837,10 +842,35 @@ Grund: er weiß zu viel.</textarea>
         </div>
 
       </div>
-
+<div class="panel">
+        <div class="panel-header" onclick="togglePanel(this.closest('.panel'))">
+          <span class="panel-title">BIOGRAFIE</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span class="panel-badge">BIO-SYS</span><i class="panel-chevron">▼</i></span>
+        </div>
+        <div class="panel-body">
+          <div class="implant steel">
+            <div class="implant-desc" style="color: var(--text)">Severus Mancus ist ein gebrochener Mann, äußerlich wie innerlich. Sein Körper trägt die Spuren früherer Folterungen: Viele Narben und diverse Implantate. 
+									</br>
+									Kalt, analytisch, aber mit einem abgründigen Sinn für Humor. </br>
+									Er ist brilliant, sarkastisch, aber auch sehr charismatisch, wenn er es sein muss.</br>
+									Er versteht Menschen besser, als sie sich selbst verstehen und nutzt dieses Fertigkeit gnadenlos.</br>
+									Um an Informationen zu gelangen, ist ihm jedes Mittel recht. An Moral glaubt er nicht.</br>
+									Dennoch ist er kein Sadist, seine Grausamkeit ist stets zweckmäßig. </br>
+									Früher war Severus Mancus ein Rising Star bei einem Konzern, spezialisiert auf neuronale Schnittstellen und adaptive Sicherheitsarchitektur. Intelligent, ehrgeizig, charmant – der Inbegriff eines Konzern-Managers.</br>
+									Doch bei einem internen Machtkampf wurde er Opfer einer Anschuldigung wegen „Datendiebstahls und Sabotage“.</br>
+									In Wahrheit war er unschuldig – aber zu nützlich, um getötet zu werden. Stattdessen wurde er monatelang verhört, gefoltert und schließlich „rehabilitiert“: mit zerstörtem Geist und Körper und einem implantierten Überwachungs-Chip, der seine Loyalität erzwingen sollte.</br>
+									Er entkam irgendwann und löschte den Chip.</br>
+									Seitdem arbeitet er im Schatten als Hacker und Informationshändler.
+				</div>
+            <div class="implant-bar"><div class="implant-bar-fill" style="width:88%;background:linear-gradient(90deg,var(--steel),var(--steel-bright));box-shadow:0 0 4px rgba(113,128,150,0.4);"></div></div>
+          </div>
+	</div>	  
+</div>	
     </div><!-- /col-right -->
   </div><!-- /layout -->
 
+	  
+		  
   <div class="bottom-bar">
     <div>SHADOW-AKTE #3319-M // REV.2.1 // SEKTION 9-DELTA</div>
     <div class="blink">● LIVE-EDIT AKTIV</div>
